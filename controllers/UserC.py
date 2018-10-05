@@ -1,5 +1,5 @@
 from app import route, render_template
-from flask import request
+from flask import request, session, redirect
 from models import User
 
 @route('/user', methods = ['GET'])
@@ -19,7 +19,8 @@ def handleLogin():
     try:
         user = User.get(User.username==un,
                         User.password==pw)
-        return user.username
+        session['user_id'] = user.id
+        return redirect('/')
     except:
         return 'username and passwor not match'
 
