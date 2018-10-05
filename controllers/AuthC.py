@@ -18,7 +18,6 @@ def login_required(view):
 
 @bp.before_app_request
 def load_logged_in_user():
-    print 'before req'
     """If a user id is stored in the session, load the user object from
     the database into ``g.user``."""
     user_id = session.get('user_id')
@@ -46,4 +45,16 @@ def handleLogin():
 def logout():
     session.clear()
     return redirect('/')
+
+
+@bp.route('/register', methods = ['POST'])
+def handleRegister():
+    un = request.form['username']
+    pw = request.form['password']
+    try:
+        user = User.create(username = un, password = pw)
+        session['user_id'] = user.id
+        return redirect('/')
+    except:
+        return 'unknown errore'
 

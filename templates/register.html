@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div style="margin: auto; margin-top: 5rem; width: 50%; max-width: 450px; min-width: 300px;">
+    <h1>Register</h1>
+    {% from "userForm.html" import form %}
+    {{ form(action, 'Register') }}
+</div>
+{% endblock %}
