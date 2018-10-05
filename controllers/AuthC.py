@@ -1,5 +1,5 @@
 import functools
-from flask import redirect, g, url_for, Blueprint, session
+from flask import redirect, g, url_for, Blueprint, session, request
 from models import User
 
 bp = Blueprint('auth', __name__)
@@ -9,7 +9,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('/login'))
+            return redirect(url_for('user.login'))
 
         return view(**kwargs)
 
@@ -27,4 +27,23 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = User.get_by_id(user_id)
+
+
+@bp.route('/login', methods = ['POST'])
+def handleLogin():
+    un = request.form['username']
+    pw = request.form['password']
+    try:
+        user = User.get(User.username==un,
+                        User.password==pw)
+        session['user_id'] = user.id
+        return redirect('/')
+    except:
+        return 'username and passwor not match'
+
+
+@bp.route('/logout', methods = ['GET'])
+def logout():
+    session.clear()
+    return redirect('/')
 

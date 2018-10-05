@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, g, Blueprint
 from models import User
-from utils import login_required, register_bp
+from controllers import login_required, register_bp
 
 app = Flask(__name__)
 
